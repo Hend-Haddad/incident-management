@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2>Tableau de Bord Citoyen</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Dashboard Citoyen</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-title">Mes Signalements</div>
+                    <div class="stat-number">7</div>
+                    <div class="stat-trend" style="color: #3498db;">
+                        <i class="fas fa-file-alt"></i> Total
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-title">En Cours</div>
+                    <div class="stat-number">3</div>
+                    <div class="stat-trend" style="color: #f39c12;">
+                        <i class="fas fa-clock"></i> En traitement
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-title">Résolus</div>
+                    <div class="stat-number">4</div>
+                    <div class="stat-trend" style="color: #27ae60;">
+                        <i class="fas fa-check-circle"></i> Terminés
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="stat-card">
+                    <h5>Bienvenue Citoyen</h5>
+                    <p>Merci de contribuer à l'amélioration de notre ville !</p>
+                    <a th:href="@{#}" class="btn btn-primary">
+                        <i class="fas fa-plus-circle me-2"></i>Signaler un nouvel incident
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

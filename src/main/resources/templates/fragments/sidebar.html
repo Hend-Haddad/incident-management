@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<body>
+    <!-- Fragment Sidebar -->
+    <div th:fragment="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h4>🏙️ Ville Intelligente</h4>
+            <small class="text-light opacity-75">Plateforme de Gestion</small>
+        </div>
+
+        <div class="sidebar-menu">
+            <!-- Menu Administrateur -->
+            <div sec:authorize="hasRole('ADMINISTRATEUR')">
+                <a th:href="@{/admin/dashboard}" class="menu-item">
+                    <i class="menu-icon fas fa-tachometer-alt"></i>
+                    <span class="menu-text">Dashboard</span>
+                </a>
+
+                <a th:href="@{/agent/dashboard}" class="menu-item">
+                    <i class="menu-icon fas fa-tachometer-alt"></i>
+                    <span class="menu-text">Dashboard Agent</span>
+                </a>
+
+                <a th:href="@{/citoyen/dashboard}" class="menu-item">
+                    <i class="menu-icon fas fa-home"></i>
+                    <span class="menu-text">Tableau de Bord</span>
+                </a>
+            </div>
+
+            <!-- Menu Agent Municipal -->
+            <div sec:authorize="hasRole('AGENT_MUNICIPAL')">
+                <a th:href="@{/agent/dashboard}" class="menu-item">
+                    <i class="menu-icon fas fa-tachometer-alt"></i>
+                    <span class="menu-text">Dashboard Agent</span>
+                </a>
+                
+                <a href="#" class="menu-item">
+                    <i class="menu-icon fas fa-tasks"></i>
+                    <span class="menu-text">Incidents Assignés</span>
+                </a>
+                
+                <a href="#" class="menu-item">
+                    <i class="menu-icon fas fa-map-marker-alt"></i>
+                    <span class="menu-text">Carte des Incidents</span>
+                </a>
+            </div>
+
+            <!-- Menu Citoyen -->
+            <div sec:authorize="hasRole('CITOYEN')">
+                <a th:href="@{/citoyen/dashboard}" class="menu-item">
+                    <i class="menu-icon fas fa-home"></i>
+                    <span class="menu-text">Tableau de Bord</span>
+                </a>
+                
+                <a href="#" class="menu-item">
+                    <i class="menu-icon fas fa-plus-circle"></i>
+                    <span class="menu-text">Signaler un Incident</span>
+                </a>
+                
+                <a href="#" class="menu-item">
+                    <i class="menu-icon fas fa-history"></i>
+                    <span class="menu-text">Mes Signalements</span>
+                </a>
+            </div>
+
+            <!-- Menu Commun à tous -->
+            <div class="mt-4">
+                <a href="#" class="menu-item">
+                    <i class="menu-icon fas fa-user"></i>
+                    <span class="menu-text">Mon Profil</span>
+                </a>
+                
+                <a href="#" class="menu-item">
+                    <i class="menu-icon fas fa-question-circle"></i>
+                    <span class="menu-text">Aide & Support</span>
+                </a>
+                
+                <form th:action="@{/logout}" method="post" class="menu-item">
+                    <i class="menu-icon fas fa-sign-out-alt"></i>
+                    <button type="submit" class="btn btn-link p-0 border-0 text-light text-decoration-none">
+                        <span class="menu-text">Déconnexion</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

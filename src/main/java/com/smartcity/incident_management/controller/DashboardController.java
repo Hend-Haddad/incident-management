@@ -1,7 +1,5 @@
 package com.smartcity.incident_management.controller;
 
-
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -31,19 +29,22 @@ public class DashboardController {
     
     @GetMapping("/admin/dashboard")
     public String adminDashboard(Model model) {
-        model.addAttribute("pageTitle", "Tableau de bord Administrateur");
-        return "admin/dashboard";
+        model.addAttribute("pageTitle", "Tableau de Bord Administrateur");
+        model.addAttribute("content", "dashboard-admin :: content"); // ← CHANGEMENT ICI
+        return "layout"; // ← CHANGEMENT ICI
     }
     
     @GetMapping("/agent/dashboard")
     public String agentDashboard(Model model) {
-        model.addAttribute("pageTitle", "Tableau de bord Agent Municipal");
-        return "agent/dashboard";
+        model.addAttribute("pageTitle", "Tableau de Bord Agent Municipal");
+        model.addAttribute("content", "dashboard-agent :: content"); // ← À CRÉER
+        return "layout"; // ← CHANGEMENT ICI
     }
     
     @GetMapping("/citoyen/dashboard")
     public String citoyenDashboard(Model model) {
-        model.addAttribute("pageTitle", "Tableau de bord Citoyen");
-        return "citoyen/dashboard";
+        model.addAttribute("pageTitle", "Tableau de Bord Citoyen");
+        model.addAttribute("content", "dashboard-citoyen :: content"); // ← À CRÉER
+        return "layout"; // ← CHANGEMENT ICI
     }
 }

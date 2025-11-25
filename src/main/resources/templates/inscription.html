@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - Plateforme Gestion d'Incidents</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        .registration-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border: none;
+        }
+        .registration-header {
+            background: #007bff;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+        }
+        .form-label {
+            font-weight: 500;
+        }
+        .btn-primary {
+            background: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card registration-card">
+                    <!-- En-tête -->
+                    <div class="registration-header">
+                        <h4>🏙️ Ville Intelligente</h4>
+                        <p class="mb-0">Créer un compte citoyen</p>
+                    </div>
+
+                    <!-- Corps du formulaire -->
+                    <div class="card-body p-4">
+                        <!-- Messages d'erreur/succès -->
+                        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Erreur !</strong> <span th:text="${error}"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+
+                        <!-- Formulaire d'inscription -->
+                        <form th:action="@{/inscription}" method="post" th:object="${utilisateur}">
+                            <!-- Nom et Prénom -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="nom" class="form-label">Nom *</label>
+                                        <input type="text" 
+                                               class="form-control" 
+                                               id="nom" 
+                                               th:field="*{nom}"
+                                               placeholder="Votre nom" 
+                                               required>
+                                        <div class="form-text">Votre nom de famille</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="prenom" class="form-label">Prénom *</label>
+                                        <input type="text" 
+                                               class="form-control" 
+                                               id="prenom" 
+                                               th:field="*{prenom}"
+                                               placeholder="Votre prénom" 
+                                               required>
+                                        <div class="form-text">Votre prénom</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Adresse email *</label>
+                                <input type="email" 
+                                       class="form-control" 
+                                       id="email" 
+                                       th:field="*{email}"
+                                       placeholder="votre@email.com" 
+                                       required>
+                                <div class="form-text">Cette adresse servira pour vous connecter</div>
+                            </div>
+
+                            <!-- Téléphone -->
+                            <div class="mb-3">
+                                <label for="telephone" class="form-label">Téléphone</label>
+                                <input type="tel" 
+                                       class="form-control" 
+                                       id="telephone" 
+                                       th:field="*{telephone}"
+                                       placeholder="06 12 34 56 78">
+                                <div class="form-text">Optionnel - pour vous contacter si nécessaire</div>
+                            </div>
+
+                            <!-- Mot de passe -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="motDePasse" class="form-label">Mot de passe *</label>
+                                        <input type="password" 
+                                               class="form-control" 
+                                               id="motDePasse" 
+                                               th:field="*{motDePasse}"
+                                               placeholder="Votre mot de passe" 
+                                               required
+                                               minlength="6">
+                                        <div class="form-text">Minimum 6 caractères</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="confirmationMotDePasse" class="form-label">Confirmation *</label>
+                                        <input type="password" 
+                                               class="form-control" 
+                                               id="confirmationMotDePasse"
+                                               placeholder="Confirmez votre mot de passe" 
+                                               required>
+                                        <div class="form-text">Retapez votre mot de passe</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Informations sur le rôle -->
+                            <div class="alert alert-info">
+                                <h6 class="alert-heading">💡 Information</h6>
+                                <p class="mb-0">
+                                    En créant un compte, vous devenez automatiquement <strong>citoyen</strong> 
+                                    de notre plateforme. Vous pourrez signaler des incidents et suivre leur résolution.
+                                </p>
+                            </div>
+
+                            <!-- Boutons -->
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    Créer mon compte citoyen
+                                </button>
+                                <a th:href="@{/login}" class="btn btn-outline-secondary">
+                                    ← Retour à la connexion
+                                </a>
+                            </div>
+                        </form>
+
+                        <!-- Informations légales -->
+                        <div class="mt-4 text-center">
+                            <small class="text-muted">
+                                En créant un compte, vous acceptez nos conditions d'utilisation 
+                                et notre politique de confidentialité.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Script de validation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            const password = document.getElementById('motDePasse');
+            const confirmPassword = document.getElementById('confirmationMotDePasse');
+            
+            form.addEventListener('submit', function(event) {
+                // Validation de la confirmation du mot de passe
+                if (password.value !== confirmPassword.value) {
+                    event.preventDefault();
+                    alert('Les mots de passe ne correspondent pas !');
+                    confirmPassword.focus();
+                    return false;
+                }
+                
+                // Validation de la longueur du mot de passe
+                if (password.value.length < 6) {
+                    event.preventDefault();
+                    alert('Le mot de passe doit contenir au moins 6 caractères !');
+                    password.focus();
+                    return false;
+                }
+                
+                return true;
+            });
+            
+            // Validation en temps réel de la confirmation
+            confirmPassword.addEventListener('input', function() {
+                if (password.value !== confirmPassword.value) {
+                    confirmPassword.classList.add('is-invalid');
+                    confirmPassword.classList.remove('is-valid');
+                } else {
+                    confirmPassword.classList.remove('is-invalid');
+                    confirmPassword.classList.add('is-valid');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

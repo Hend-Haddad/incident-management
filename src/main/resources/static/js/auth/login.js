@@ -10,10 +10,41 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
     });
 
+    // Fonctionnalité de visibilité du mot de passe
+    const togglePassword = document.getElementById('togglePassword');
+    const password = document.getElementById('password');
+    const passwordIcon = document.getElementById('passwordIcon');
+    const passwordInputGroup = document.querySelector('.password-input-group');
+
+    if (togglePassword && password && passwordIcon) {
+        // Initialisation : œil barré = mot de passe masqué
+        passwordIcon.classList.add('bi-eye-slash');
+        togglePassword.setAttribute('title', 'Afficher le mot de passe');
+
+        togglePassword.addEventListener('click', function() {
+            // Basculer le type de champ
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            
+            // CORRECTION : Logique inversée
+            if (type === 'text') {
+                // Mot de passe visible = œil normal (non barré)
+                passwordIcon.classList.remove('bi-eye-slash');
+                passwordIcon.classList.add('bi-eye');
+                togglePassword.setAttribute('title', 'Masquer le mot de passe');
+            } else {
+                // Mot de passe masqué = œil barré
+                passwordIcon.classList.remove('bi-eye');
+                passwordIcon.classList.add('bi-eye-slash');
+                togglePassword.setAttribute('title', 'Afficher le mot de passe');
+            }
+        });
+    }
+
     // Validation en temps réel
     const form = document.getElementById('loginForm');
     const email = document.getElementById('email');
-    const password = document.getElementById('password');
+    const passwordField = document.getElementById('password');
     const emailError = document.getElementById('emailError');
     const passwordError = document.getElementById('passwordError');
 
@@ -28,11 +59,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function showError(input, errorElement, message) {
         input.classList.add('is-invalid');
+        if (input === passwordField && passwordInputGroup) {
+            passwordInputGroup.classList.add('is-invalid');
+        }
         errorElement.textContent = message;
     }
 
     function clearError(input, errorElement) {
         input.classList.remove('is-invalid');
+        if (input === passwordField && passwordInputGroup) {
+            passwordInputGroup.classList.remove('is-invalid');
+        }
         errorElement.textContent = '';
     }
 
@@ -47,13 +84,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    password.addEventListener('blur', function() {
-        if (password.value.trim() === '') {
-            showError(password, passwordError, 'Le mot de passe est requis');
-        } else if (!validatePassword(password)) {
-            showError(password, passwordError, 'Le mot de passe doit contenir au moins 6 caractères');
+    passwordField.addEventListener('blur', function() {
+        if (passwordField.value.trim() === '') {
+            showError(passwordField, passwordError, 'Le mot de passe est requis');
+        } else if (!validatePassword(passwordField)) {
+            showError(passwordField, passwordError, 'Le mot de passe doit contenir au moins 6 caractères');
         } else {
-            clearError(password, passwordError);
+            clearError(passwordField, passwordError);
         }
     });
 
@@ -73,14 +110,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Validation mot de passe
-        if (password.value.trim() === '') {
-            showError(password, passwordError, 'Le mot de passe est requis');
+        if (passwordField.value.trim() === '') {
+            showError(passwordField, passwordError, 'Le mot de passe est requis');
             isValid = false;
-        } else if (!validatePassword(password)) {
-            showError(password, passwordError, 'Le mot de passe doit contenir au moins 6 caractères');
+        } else if (!validatePassword(passwordField)) {
+            showError(passwordField, passwordError, 'Le mot de passe doit contenir au moins 6 caractères');
             isValid = false;
         } else {
-            clearError(password, passwordError);
+            clearError(passwordField, passwordError);
         }
 
         if (!isValid) {
@@ -91,6 +128,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 firstError.focus();
             }
+        }
+    });
+
+    // Effacer les erreurs lors de la saisie
+    email.addEventListener('input', function() {
+        if (email.value.trim() !== '') {
+            clearError(email, emailError);
+        }
+    });
+
+    passwordField.addEventListener('input', function() {
+        if (passwordField.value.trim() !== '') {
+            clearError(passwordField, passwordError);
         }
     });
 });

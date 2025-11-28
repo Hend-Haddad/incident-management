@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import java.util.Random;
 @Service
 @Transactional
 public class UtilisateurService {
@@ -154,5 +155,23 @@ public class UtilisateurService {
             );
             System.out.println("🔄 Compte administrateur initialisé");
         }
+    }
+    
+    
+
+
+    // Ajoutez ces méthodes dans la classe UtilisateurService
+    public String generateVerificationCode() {
+        Random random = new Random();
+        int code = 100000 + random.nextInt(900000);
+        return String.valueOf(code);
+    }
+
+    public void updatePassword(String email, String newPassword) {
+        Utilisateur utilisateur = utilisateurRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+        
+        utilisateur.setMotDePasse(passwordEncoder.encode(newPassword));
+        utilisateurRepository.save(utilisateur);
     }
 }

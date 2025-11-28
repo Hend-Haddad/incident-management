@@ -1,7 +1,5 @@
 package com.smartcity.incident_management.security;
 
-
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,6 +18,15 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .antMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
                 .antMatchers("/", "/login", "/inscription", "/public/**").permitAll()
+
+                // 👉 Ajout obligatoire pour permettre l’accès aux pages Mot de passe oublié
+                .antMatchers(
+                    "/forgot-password",
+                    "/verify-code",
+                    "/reset-password",
+                    "/resend-code"
+                ).permitAll()
+
                 .antMatchers("/admin/**").hasRole("ADMINISTRATEUR")
                 .antMatchers("/agent/**").hasRole("AGENT_MUNICIPAL")
                 .antMatchers("/citoyen/**").hasRole("CITOYEN")

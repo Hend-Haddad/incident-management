@@ -9,10 +9,50 @@ document.addEventListener('DOMContentLoaded', function() {
     const conditions = document.getElementById('conditions');
     const confirmationError = document.getElementById('confirmationError');
     const conditionsError = document.getElementById('conditionsError');
+    const emailError = document.getElementById('emailError');
 
+    // Fonctionnalité de visibilité pour les mots de passe
+    function setupPasswordToggle(passwordId, toggleId, iconId) {
+        const togglePassword = document.getElementById(toggleId);
+        const password = document.getElementById(passwordId);
+        const passwordIcon = document.getElementById(iconId);
+        const passwordInputGroup = password.closest('.password-input-group');
+
+        if (togglePassword && password && passwordIcon) {
+            // Initialisation : œil barré = mot de passe masqué
+            passwordIcon.classList.add('bi-eye-slash');
+            togglePassword.setAttribute('title', 'Afficher le mot de passe');
+
+            togglePassword.addEventListener('click', function() {
+                // Basculer le type de champ
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+                
+                // Logique correcte : œil normal = visible, œil barré = masqué
+                if (type === 'text') {
+                    // Mot de passe visible = œil normal (non barré)
+                    passwordIcon.classList.remove('bi-eye-slash');
+                    passwordIcon.classList.add('bi-eye');
+                    togglePassword.setAttribute('title', 'Masquer le mot de passe');
+                } else {
+                    // Mot de passe masqué = œil barré
+                    passwordIcon.classList.remove('bi-eye');
+                    passwordIcon.classList.add('bi-eye-slash');
+                    togglePassword.setAttribute('title', 'Afficher le mot de passe');
+                }
+            });
+        }
+    }
+
+    // Initialiser les deux champs mot de passe
+    setupPasswordToggle('motDePasse', 'togglePassword1', 'passwordIcon1');
+    setupPasswordToggle('confirmationMotDePasse', 'togglePassword2', 'passwordIcon2');
+
+    // Validation spécifique pour email (doit se terminer par @gmail.com)
     function validateEmail(input) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(input.value);
+        const emailValue = input.value.trim();
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+        return emailRegex.test(emailValue);
     }
 
     function validatePassword(input) {
@@ -30,7 +70,17 @@ document.addEventListener('DOMContentLoaded', function() {
     function showError(input, message) {
         input.classList.add('is-invalid');
         input.classList.remove('is-valid');
+        
+        // Gestion spéciale pour les groupes mot de passe
+        const inputGroup = input.closest('.password-input-group');
+        if (inputGroup) {
+            inputGroup.classList.add('is-invalid');
+        }
+        
         let errorDiv = input.nextElementSibling;
+        if (!errorDiv || !errorDiv.classList.contains('error-message')) {
+            errorDiv = input.parentNode.nextElementSibling;
+        }
         if (errorDiv && errorDiv.classList.contains('error-message')) {
             errorDiv.textContent = message;
         }
@@ -39,7 +89,17 @@ document.addEventListener('DOMContentLoaded', function() {
     function showSuccess(input) {
         input.classList.remove('is-invalid');
         input.classList.add('is-valid');
-        const errorDiv = input.nextElementSibling;
+        
+        // Gestion spéciale pour les groupes mot de passe
+        const inputGroup = input.closest('.password-input-group');
+        if (inputGroup) {
+            inputGroup.classList.remove('is-invalid');
+        }
+        
+        let errorDiv = input.nextElementSibling;
+        if (!errorDiv || !errorDiv.classList.contains('error-message')) {
+            errorDiv = input.parentNode.nextElementSibling;
+        }
         if (errorDiv && errorDiv.classList.contains('error-message')) {
             errorDiv.textContent = '';
         }
@@ -63,10 +123,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     email.addEventListener('blur', function() {
-        if (!validateEmail(email)) {
-            showError(email, 'Veuillez saisir une adresse email valide');
+        const emailValue = email.value.trim();
+        if (emailValue === '') {
+            showError(email, 'L\'adresse email est requise');
+            emailError.textContent = 'L\'adresse email est requise';
+        } else if (!validateEmail(email)) {
+            showError(email, 'L\'email doit être une adresse @gmail.com valide');
+            emailError.textContent = 'L\'email doit être une adresse @gmail.com valide';
         } else {
             showSuccess(email);
+            emailError.textContent = '';
         }
     });
 
@@ -94,10 +160,18 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!validateConfirmation()) {
             confirmationMotDePasse.classList.add('is-invalid');
             confirmationMotDePasse.classList.remove('is-valid');
+            const inputGroup = confirmationMotDePasse.closest('.password-input-group');
+            if (inputGroup) {
+                inputGroup.classList.add('is-invalid');
+            }
             confirmationError.textContent = 'Les mots de passe ne correspondent pas';
         } else {
             confirmationMotDePasse.classList.remove('is-invalid');
             confirmationMotDePasse.classList.add('is-valid');
+            const inputGroup = confirmationMotDePasse.closest('.password-input-group');
+            if (inputGroup) {
+                inputGroup.classList.remove('is-invalid');
+            }
             confirmationError.textContent = '';
         }
     }
@@ -129,7 +203,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (!validateEmail(email)) {
-            showError(email, 'Veuillez saisir une adresse email valide');
+            showError(email, 'L\'email doit être une adresse @gmail.com valide');
+            emailError.textContent = 'L\'email doit être une adresse @gmail.com valide';
             isValid = false;
         }
 
@@ -145,6 +220,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (!validateConfirmation()) {
             confirmationMotDePasse.classList.add('is-invalid');
+            const inputGroup = confirmationMotDePasse.closest('.password-input-group');
+            if (inputGroup) {
+                inputGroup.classList.add('is-invalid');
+            }
             confirmationError.textContent = 'Les mots de passe ne correspondent pas';
             isValid = false;
         }
@@ -163,5 +242,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 firstError.focus();
             }
         }
+    });
+
+    // Effacer les erreurs lors de la saisie
+    [nom, prenom, email, telephone, motDePasse, confirmationMotDePasse].forEach(input => {
+        input.addEventListener('input', function() {
+            if (this.value.trim() !== '') {
+                showSuccess(this);
+                if (this === email) {
+                    emailError.textContent = '';
+                }
+            }
+        });
     });
 });

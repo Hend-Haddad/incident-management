@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div th:fragment="content">
+        <!-- En-tête de page -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2>Tableau de Bord Administrateur</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Dashboard-active</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Cartes de statistiques -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-title">Revenu Total</div>
+                    <div class="stat-number">$847,290</div>
+                    <div class="stat-trend" style="color: #27ae60;">
+                        <i class="fas fa-arrow-up"></i> +12.5% depuis le mois dernier
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-title">Utilisateurs Actifs</div>
+                    <div class="stat-number">24,689</div>
+                    <div class="stat-trend" style="color: #27ae60;">
+                        <i class="fas fa-arrow-up"></i> +8.2% depuis la semaine dernière
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-title">Commandes</div>
+                    <div class="stat-number">1,248</div>
+                    <div class="stat-trend" style="color: #e74c3c;">
+                        <i class="fas fa-arrow-down"></i> -2.1% depuis hier
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-title">Taux de Conversion</div>
+                    <div class="stat-number">3.47%</div>
+                    <div class="stat-trend" style="color: #27ae60;">
+                        <i class="fas fa-arrow-up"></i> +0.3% depuis le mois dernier
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deuxième ligne de statistiques -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-title">Analytique en Temps Réel</div>
+                    <div class="d-flex align-items-center">
+                        <div class="stat-number me-3">83</div>
+                        <div>
+                            <div>Sessions</div>
+                            <div class="stat-number">47,829</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-title">Vues de Page</div>
+                    <div class="stat-number">186,247</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-title">Analytique des Appareils</div>
+                    <div class="d-flex justify-content-between">
+                        <div class="text-center">
+                            <div class="stat-number">70</div>
+                            <small>Mobile</small>
+                        </div>
+                        <div class="text-center">
+                            <div class="stat-number">300</div>
+                            <small>Tablette</small>
+                        </div>
+                        <div class="text-center">
+                            <div class="stat-number">900</div>
+                            <small>Desktop</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<body>
+    <!-- Fragment App Bar -->
+    <div th:fragment="appbar" class="app-bar">
+        <!-- Bouton menu mobile -->
+        <button class="btn d-md-none" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Barre de recherche -->
+        <div class="search-bar position-relative">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" placeholder="Rechercher..." class="form-control ps-5">
+        </div>
+
+        <!-- Actions utilisateur -->
+        <div class="user-actions">
+            <!-- Notifications -->
+            <div class="notification-icon">
+                <i class="fas fa-bell fa-lg"></i>
+                <span class="notification-badge">3</span>
+            </div>
+
+            <!-- Profil -->
+            <div class="profile-dropdown">
+                <div class="profile-icon" id="profileIcon">
+                    <i class="fas fa-user-circle fa-2x"></i>
+                </div>
+                <div class="profile-menu" id="profileMenu">
+                    <div class="profile-menu-item user-info">
+                        <strong sec:authentication="name"></strong>
+                        <br>
+                        <small class="text-muted" sec:authorize="hasRole('ADMINISTRATEUR')">Administrateur</small>
+                        <small class="text-muted" sec:authorize="hasRole('AGENT_MUNICIPAL')">Agent Municipal</small>
+                        <small class="text-muted" sec:authorize="hasRole('CITOYEN')">Citoyen</small>
+                    </div>
+                    <a href="#" class="profile-menu-item">
+                        <i class="fas fa-user me-2"></i>Mon Profil
+                    </a>
+                    <a href="#" class="profile-menu-item">
+                        <i class="fas fa-cog me-2"></i>Paramètres
+                    </a>
+                    <a href="#" class="profile-menu-item">
+                        <i class="fas fa-question-circle me-2"></i>Aide & Support
+                    </a>
+                    <div class="profile-menu-item">
+                        <form th:action="@{/logout}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-link p-0 text-danger text-decoration-none">
+                                <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

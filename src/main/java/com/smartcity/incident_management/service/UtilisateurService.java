@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import java.util.Random;
 @Service
 @Transactional
 public class UtilisateurService {
@@ -40,6 +41,20 @@ public class UtilisateurService {
         Utilisateur u = new Utilisateur(nom, prenom, email, motDePasse, Role.CITOYEN);
         u.setTelephone(telephone);
         return creerUtilisateur(u);
+    }
+
+    // Créer un administrateur
+    public Utilisateur creerAdministrateur(String nom, String prenom, String email, String motDePasse, String telephone) {
+        Utilisateur admin = new Utilisateur(nom, prenom, email, motDePasse, Role.ADMINISTRATEUR);
+        admin.setTelephone(telephone);
+        return creerUtilisateur(admin);
+    }
+
+    // Créer un agent municipal
+    public Utilisateur creerAgentMunicipal(String nom, String prenom, String email, String motDePasse, String telephone) {
+        Utilisateur agent = new Utilisateur(nom, prenom, email, motDePasse, Role.AGENT_MUNICIPAL);
+        agent.setTelephone(telephone);
+        return creerUtilisateur(agent);
     }
 
     // Mettre à jour
@@ -106,6 +121,10 @@ public class UtilisateurService {
         }
         return false;
     }
+    
+    
+    
+    
 
     public void supprimerUtilisateur(Long id) {
         if (!utilisateurRepository.existsById(id)) {
@@ -121,5 +140,38 @@ public class UtilisateurService {
         long admins = utilisateurRepository.countByRole(Role.ADMINISTRATEUR);
 
         return "Total: " + total + " | Citoyens: " + citoyens + " | Agents: " + agents + " | Admins: " + admins;
+    }
+
+    // Méthode utilitaire pour créer un admin rapidement
+    public void initialiserAdminParDefaut() {
+        String emailAdmin = "admin@ville-intelligente.com";
+        if (!emailExiste(emailAdmin)) {
+            creerAdministrateur(
+                "Administrateur", 
+                "System", 
+                emailAdmin, 
+                "admin123", 
+                "99999999"
+            );
+            System.out.println("🔄 Compte administrateur initialisé");
+        }
+    }
+    
+    
+
+
+    // Ajoutez ces méthodes dans la classe UtilisateurService
+    public String generateVerificationCode() {
+        Random random = new Random();
+        int code = 100000 + random.nextInt(900000);
+        return String.valueOf(code);
+    }
+
+    public void updatePassword(String email, String newPassword) {
+        Utilisateur utilisateur = utilisateurRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+        
+        utilisateur.setMotDePasse(passwordEncoder.encode(newPassword));
+        utilisateurRepository.save(utilisateur);
     }
 }
